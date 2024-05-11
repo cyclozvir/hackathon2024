@@ -3,12 +3,13 @@ version: '3.7'
 services:
     web:
         container_name: eposhuk-backend-container
-        image: xsakon/eposhuk-backend-image:latest
         hostname: eposhuk-backend-service
         build:
             context: .
         volumes:
           - ./logs:/app/logs
+        ports: 
+        - '8000:8000'
 #        volumes:
 #            - project-root:/var/www/html
 #            - web_certs:/var/www/certs
