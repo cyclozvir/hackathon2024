@@ -12,6 +12,7 @@ from django.contrib.auth.password_validation import validate_password
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """Customizes JWT default Serializer to add more information about user"""
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
@@ -31,7 +32,7 @@ class CustomUserSerializer(ModelSerializer):
 class CustomUserUpdateSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', "role")
+        fields = ('first_name', 'last_name',)
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -47,18 +48,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        fields = ('latitude', 'longitude')
-
-
-class SeekerRegistrationSerializer(serializers.ModelSerializer):
-    locations = LocationSerializer()
-    class Meta:
-        model = Seeker
-        fields = ('first_name', 'last_name', 'email', "password", )
 
 class EmailSerializer(serializers.Serializer):
     """
