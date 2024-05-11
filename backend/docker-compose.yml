@@ -3,7 +3,7 @@ version: '3.7'
 services:
     web:
         container_name: eposhuk-backend-container
-        image: docke/eposhuk-backend-image:latest
+        image: xsakon/eposhuk-backend-image:latest
         hostname: eposhuk-backend-service
         build:
             context: .
