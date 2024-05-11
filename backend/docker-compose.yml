@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+    web:
+        hostname: eposhuk
+        build:
+            context: .
+        env_file:
+          - .env
+        volumes:
+          - ./logs:/app/logs
+#        volumes:
+#            - project-root:/var/www/html
+#            - web_certs:/var/www/certs
+#        networks:
+#            default:
+#                ipv4_address: 172.55.66.2
+#        depends_on:
+#            - kafdrop
