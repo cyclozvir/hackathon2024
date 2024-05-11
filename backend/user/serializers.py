@@ -3,6 +3,8 @@ from django.core.exceptions import ValidationError
 from django.utils.http import urlsafe_base64_decode
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from user.models import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.password_validation import validate_password
