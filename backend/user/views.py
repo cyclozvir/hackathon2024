@@ -64,32 +64,6 @@ class UserRegistrationView(APIView):
         return Response(serializer.errors, status=status.HTTP_409_CONFLICT)
 
 
-class SeekerRegistrationView(APIView):
-    permission_classes = (AllowAny,)
-
-    @swagger_auto_schema(tags=["user"])
-    def post(self, request):
-        serializer = UserRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            print(serializer.data)
-            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ReporterRegistrationView(APIView):
-    permission_classes = (AllowAny,)
-
-    @swagger_auto_schema(tags=["user"])
-    def post(self, request):
-        serializer = UserRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            print(serializer.data)
-            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class PasswordReset(generics.GenericAPIView):
     """
     Request for Password Reset Link.
