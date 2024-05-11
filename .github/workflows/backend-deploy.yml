@@ -1,0 +1,42 @@
+name: Backend deploy to DigitalOcean
+
+on:
+  # push:
+  #   branches: [backend]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build Docker image
+      run: docker build -t eposhuk-backend-image .
+
+    - name: Copy files to remote server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.DIGITAL_OCEAN_HOST }}
+        username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
+        passphrase: ${{ secrets.DIGITAL_OCEAN_SSH_PASSPHRASE }}
+        key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
+        source: "hackathon2024/backend/docker-compose.yml"
+        target: /home/hackathon2024/backend
+
+    - name: Deploy to remote server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DIGITAL_OCEAN_HOST }}
+        username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
+        key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
+        passphrase: ${{ secrets.DIGITAL_OCEAN_SSH_PASSPHRASE }}
+        script: |
+          docker stop eposhuk-backend-container || true
+          docker rm eposhuk-backend-container || true
+          docker rmi -f eposhuk-backend-image || true
+          docker build -t eposhuk-backend-image .
+          docker-compose -f /home/hackathon2024/backend/docker-compose.yml up -d
