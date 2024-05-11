@@ -11,20 +11,6 @@ jobs:
     
     steps:
     
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Copy files to remote server
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.DIGITAL_OCEAN_HOST }}
-        username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
-        passphrase: ${{ secrets.DIGITAL_OCEAN_SSH_PASSPHRASE }}
-        key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
-        source: "."
-        target: /home/hackathon2024/backend
-        rm: true
-
     - name: Deploy to remote server
       uses: appleboy/ssh-action@master
       with:
@@ -37,5 +23,6 @@ jobs:
           docker stop eposhuk-backend-container || true
           docker rm eposhuk-backend-container || true
           docker rmi -f eposhuk-backend-image || true
+          git clone https://${{ secrets.GH_TOKEN }}@github.com/cyclozvir/hackathon2024.git .
           docker build -t eposhuk-backend-image -f Dockerfile .
           docker-compose -f docker-compose.yml up -d
