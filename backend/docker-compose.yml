@@ -2,11 +2,11 @@ version: '3.7'
 
 services:
     web:
-        hostname: eposhuk
+        container_name: eposhuk-backend-container
+        image: docke/eposhuk-backend-image:latest
+        hostname: eposhuk-backend-service
         build:
             context: .
-        env_file:
-          - .env
         volumes:
           - ./logs:/app/logs
 #        volumes:
