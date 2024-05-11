@@ -38,5 +38,5 @@ jobs:
           docker stop eposhuk-backend-container || true
           docker rm eposhuk-backend-container || true
           docker rmi -f eposhuk-backend-image || true
-          docker build -t eposhuk-backend-image ./home/hackathon2024/backend
+          docker build . -t eposhuk-backend-image -f backend/Dockerfile
           docker-compose -f /home/hackathon2024/backend/docker-compose.yml up -d
