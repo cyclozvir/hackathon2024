@@ -19,10 +19,10 @@ jobs:
         key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
         passphrase: ${{ secrets.DIGITAL_OCEAN_SSH_PASSPHRASE }}
         script: |
-          cd /home/hackathon2024/backend
           docker stop eposhuk-backend-container || true
           docker rm eposhuk-backend-container || true
           docker rmi -f eposhuk-backend-image || true
           git clone https://${{ secrets.GH_TOKEN }}@github.com/cyclozvir/hackathon2024.git .
+          cd /home/hackathon2024/backend
           docker build -t eposhuk-backend-image -f Dockerfile .
           docker-compose -f docker-compose.yml up -d
