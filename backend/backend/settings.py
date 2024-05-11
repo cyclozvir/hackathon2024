@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 import dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +27,6 @@ SECRET_KEY = 'django-insecure-m9d2e#_9!o(u^g(r*(h&*_a+9o_n*z&*9#p$-51!w48%0+h2id
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -79,7 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -89,7 +88,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -109,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -123,7 +120,6 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'user.CustomUser'
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
@@ -134,10 +130,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv("EMAIL_NAME")# Replace with your email address
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
+print(os.getenv("EMAIL_NAME"), os.getenv("EMAIL_PASSWORD"))
+EMAIL_HOST_USER = "eeposhuk@gmail.com"#os.getenv("EMAIL_NAME")  # Replace with your email address
+EMAIL_HOST_PASSWORD = "gjmlvnellggnpmgc"# os.getenv("EMAIL_PASSWORD")

@@ -16,7 +16,7 @@ class SeekerAdmin(admin.ModelAdmin):
             'fields': ('first_name', 'last_name', 'email', 'role')
         }),
         ('Additional Information', {
-            'fields': ('occupation',)
+            'fields': ('occupation', )
         }),
     )
 

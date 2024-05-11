@@ -1,18 +1,17 @@
+import random
+import string
 from datetime import datetime
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.template.defaultfilters import length
 from django.utils import timezone
 from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import PermissionsMixin, User
 from django.db import models
+
+from utils.Email import send_email_with_password
 from .managers import CustomUserManager
 
-
-class Location(models.Model):
-    latitude = models.DecimalField(max_digits=9, decimal_places=6)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6)
-
-    def __str__(self):
-        return f"{self.latitude}, {self.longitude}"
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -22,7 +21,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     role = models.CharField(max_length=50, choices=(("seeker", "seeker"),
                                                     ("reporter", "reporter"),
                                                     ("manager", "manager")),
-                            default="seeker")
+                            default="reporter")
 
     REQUIRED_FIELDS = ['first_name', 'last_name', "role"]
 
@@ -40,9 +39,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                        ('create_new', 'Can create new user')]
 
 
-
-
-
 class Seeker(CustomUser):
     age = models.IntegerField(default=0)
     gender = models.CharField(max_length=100, choices=(('male', 'male'),
@@ -57,24 +53,33 @@ class Seeker(CustomUser):
     def __str__(self):
         return f"Seeker: {self.email}"
 
+@receiver(post_save, sender=Seeker)
+def track_user_password(sender, instance, created, **kwargs):
+    if created:
+        characters = string.ascii_letters + string.digits
+        password = ''.join(random.choice(characters) for _ in range(8))
+        instance.set_password(password)
+        instance.save()
+        print(f"send password to {instance.email}")
+        send_email_with_password(instance, password)
+        print(f"send password to {instance.email} was success")
+
+
 class SeekerLocation(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
     seeker = models.ForeignKey(Seeker, on_delete=models.CASCADE, related_name='locations')
+
     def __str__(self):
         return f"{self.latitude}, {self.longitude}"
 
 
-class Reporter(CustomUser):
-    occupation = models.CharField(max_length=100)
-    contact_information = models.CharField(max_length=255)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.role = "seeker"
+class Location(models.Model):
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
 
     def __str__(self):
-        return f"Reporter: {self.email}"
+        return f"{self.latitude}, {self.longitude}"
 
 
 class MissingPerson(models.Model):
@@ -92,5 +97,3 @@ class MissingPerson(models.Model):
 
     def __str__(self):
         return self.first_name
-
-
