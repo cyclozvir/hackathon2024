@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
 import {
 	Box,
@@ -12,6 +12,7 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserConext";
 
 const Register = () => {
 	const {
@@ -22,20 +23,21 @@ const Register = () => {
 		reset,
 	} = useForm();
 
+	const {data, updateData} = useContext(UserContext)
+
     const navigate = useNavigate();
 
 	useEffect(() => {
 		
 
-		/*if (checkForCookie()) {
+		if (data == 'user') {
 			navigate("/request-search");
-		}*/
+		}
 	}, [navigate]);
 
 	const onSubmit = async (formData) => {
 		const { repeatPassword, ...formDataToSend } = formData;
 		const registerEndpoint = "http://64.226.118.188:8000/api/v1/user/register/"
-		const loginEndpoint = "http://64.226.118.188:8000/api/v1/token/"
 
 		try {
 			const response = await fetch(registerEndpoint, {
@@ -48,7 +50,7 @@ const Register = () => {
 
 			if (response.status === 409) {
 				const errorData = await response.json();
-				const errorMessage = errorData.message; // Assuming the error message is available in a 'message' field
+				const errorMessage = errorData.email; // Assuming the error message is available in a 'message' field
 
 				console.log("Registration Error Message:", errorMessage);
 
@@ -67,12 +69,10 @@ const Register = () => {
 				//const redirectUrl = "/request-search";
 
 				//navigate(redirectUrl);
-
-				try {
-					
-				} catch(error){
-
-				}
+				updateData('user')
+				localStorage.setItem('jwt_access', data.access);
+				localStorage.setItem('jwt_refresh', data.refresh);
+				reset()
 			}
 		} catch (error) {
 			console.error("Error registering user:", error);
