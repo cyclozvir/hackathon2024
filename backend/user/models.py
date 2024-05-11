@@ -12,7 +12,7 @@ class Location(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
 
     def __str__(self):
-        return self.name
+        return f"{self.latitude}, {self.longitude}"
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -25,6 +25,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                             default="seeker")
 
     REQUIRED_FIELDS = ['first_name', 'last_name', "role"]
+
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -39,21 +40,32 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                        ('create_new', 'Can create new user')]
 
 
-class Seeker(models.Model):
-    age = models.IntegerField()
-    gender = models.CharField(max_length=10, choices=(('Male', 'Male'), ('Female', 'Female')))
+
+
+
+class Seeker(CustomUser):
+    age = models.IntegerField(default=0)
+    gender = models.CharField(max_length=100, choices=(('male', 'male'),
+                                                       ('female', 'female'),
+                                                       ('not specified', 'not specified')), default='not specified')
     occupation = models.CharField(max_length=100)
-    location = models.OneToOneField(Location, on_delete=models.CASCADE)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.role = "reporter"
 
     def __str__(self):
-        return f"Seeker: {self.user.email}"
+        return f"Seeker: {self.email}"
+
+class SeekerLocation(models.Model):
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    seeker = models.ForeignKey(Seeker, on_delete=models.CASCADE, related_name='locations')
+    def __str__(self):
+        return f"{self.latitude}, {self.longitude}"
 
 
-class Reporter(models.Model):
+class Reporter(CustomUser):
     occupation = models.CharField(max_length=100)
     contact_information = models.CharField(max_length=255)
 
@@ -62,14 +74,16 @@ class Reporter(models.Model):
         self.role = "seeker"
 
     def __str__(self):
-        return f"Reporter: {self.user.email}"
+        return f"Reporter: {self.email}"
 
 
 class MissingPerson(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    age = models.IntegerField()
-    gender = models.CharField(max_length=10, choices=(('Male', 'Male'), ('Female', 'Female')))
+    age = models.IntegerField(default=0)
+    gender = models.CharField(max_length=100, choices=(('male', 'male'),
+                                                       ('female', 'female'),
+                                                       ('not specified', 'not specified')), default='not specified')
     description = models.TextField()
     last_seen_location = models.OneToOneField(Location, on_delete=models.CASCADE)
     last_seen_date = models.DateField(default=datetime.now)
@@ -77,4 +91,6 @@ class MissingPerson(models.Model):
     contact_information = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.first_name
+
+

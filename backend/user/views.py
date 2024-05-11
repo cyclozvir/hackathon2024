@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from utils import Email
 from .models import CustomUser
 from .serializers import UserRegistrationSerializer
 # Create your views here.
@@ -109,10 +110,10 @@ class PasswordReset(generics.GenericAPIView):
                 "reset-password",
                 kwargs={"encoded_pk": encoded_pk, "token": token},
             )
-            reset_link = f"http://3.70.228.165:8000{reset_url}"
+            reset_link = f"http://64.226.118.188:8000{reset_url}"
             # myapp/views.py
 
-            subject = 'Whitemarsh NER password reset'
+            subject = 'EPoshuk password reset'
             message = f"Dear {user.first_name},\n" \
                       f"You are receiving this email because a request to reset your password has been made. " \
                       f"\nIf you did not make this request, please ignore this email.\n" \
@@ -120,7 +121,7 @@ class PasswordReset(generics.GenericAPIView):
                       f"{reset_link}\n"
             recipient_list = [user.email]  # Replace with the recipient's email addresses
 
-            # Email.send_email(subject, message, recipient_list)
+            Email.send_email(subject, message, recipient_list)
 
             return response.Response(
                 {
