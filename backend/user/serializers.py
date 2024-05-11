@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.utils.http import urlsafe_base64_decode
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from user.models import CustomUser
+from user.models import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.password_validation import validate_password
 
@@ -23,13 +23,13 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class CustomUserSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('id', 'email', 'first_name', 'last_name')
+        fields = ('id', 'email', 'first_name', "role", 'last_name')
 
 
 class CustomUserUpdateSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name')
+        fields = ('first_name', 'last_name', "role")
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -45,6 +45,18 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ('latitude', 'longitude')
+
+
+class SeekerRegistrationSerializer(serializers.ModelSerializer):
+    locations = LocationSerializer()
+    class Meta:
+        model = Seeker
+        fields = ('first_name', 'last_name', 'email', "password", )
 
 class EmailSerializer(serializers.Serializer):
     """

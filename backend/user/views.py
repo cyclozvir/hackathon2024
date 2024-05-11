@@ -16,8 +16,6 @@ from .serializers import UserRegistrationSerializer
 from user import serializers
 
 
-
-
 class CustomTokenObtainPairView(TokenObtainPairView):
     # Replace the serializer with your custom
     serializer_class = serializers.CustomTokenObtainPairSerializer
@@ -38,6 +36,7 @@ class UserView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+
 @swagger_auto_schema(tags=["user"])
 class UserUpdateView(UpdateAPIView):
     queryset = CustomUser.objects.all()
@@ -49,6 +48,32 @@ class UserUpdateView(UpdateAPIView):
 
 
 class UserRegistrationView(APIView):
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(tags=["user"])
+    def post(self, request):
+        serializer = UserRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            print(serializer.data)
+            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SeekerRegistrationView(APIView):
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(tags=["user"])
+    def post(self, request):
+        serializer = UserRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            print(serializer.data)
+            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ReporterRegistrationView(APIView):
     permission_classes = (AllowAny,)
 
     @swagger_auto_schema(tags=["user"])
@@ -92,8 +117,7 @@ class PasswordReset(generics.GenericAPIView):
                       f"You are receiving this email because a request to reset your password has been made. " \
                       f"\nIf you did not make this request, please ignore this email.\n" \
                       f"To reset your password, click on the following link:\n" \
-                      f"{reset_link}\n" \
-
+                      f"{reset_link}\n"
             recipient_list = [user.email]  # Replace with the recipient's email addresses
 
             # Email.send_email(subject, message, recipient_list)
@@ -101,7 +125,7 @@ class PasswordReset(generics.GenericAPIView):
             return response.Response(
                 {
                     "message":
-                    f"Your password was sent"
+                        f"Your password was sent"
                 },
                 status=status.HTTP_200_OK,
             )
