@@ -1,6 +1,35 @@
 #root {
-  max-width: 1280px;
+  /*max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 2rem;*/
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  min-height: 100vh;
+  min-width: 100vw;
 }
+header{
+  background-color: #4FD1C5;
+  color: white;
+  font-weight: 500;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+.heroBanner {
+  min-height: 50vh;
+  background-image: url(/src/assets/hero3.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
