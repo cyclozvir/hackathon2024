@@ -1,8 +1,8 @@
 name: Backend CI/CD Pipeline
 
 on:
-  push:
-    branches: [backend]
+  # push:
+  #   branches: [backend]
   workflow_dispatch:
 
 jobs:
