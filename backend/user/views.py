@@ -8,6 +8,7 @@ from rest_framework.generics import UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from utils import Email
@@ -55,10 +56,12 @@ class UserRegistrationView(APIView):
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            print(serializer.data)
-            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            user = serializer.save()
+            ser_user = CustomUser.objects.get(pk=user.pk)
+            refresh = RefreshToken.for_user(ser_user)
+            access_token = str(refresh.access_token)
+            return Response({'user': serializer.data, "access": access_token, 'refresh': str(refresh)}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_409_CONFLICT)
 
 
 class SeekerRegistrationView(APIView):
