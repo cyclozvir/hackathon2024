@@ -19,9 +19,9 @@ jobs:
         key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
         passphrase: ${{ secrets.DIGITAL_OCEAN_SSH_PASSPHRASE }}
         script: |
-          docker stop eposhuk-backend-container
-          docker rm eposhuk-backend-container
-          docker rmi -f eposhuk-backend-image
+          docker stop eposhuk-backend-container || echo 'no container to stop'
+          docker rm eposhuk-backend-container || echo 'no container to remove'
+          docker rmi -f eposhuk-backend-image || echo 'no image to remove'
           
           if [ -d "/home2/hackathon2024" ]; then
               rm -rf /home2/hackathon2024
