@@ -37,7 +37,7 @@ const Register = () => {
 
 	const onSubmit = async (formData) => {
 		const { repeatPassword, ...formDataToSend } = formData;
-		const registerEndpoint = "http://64.226.118.188:8000/api/v1/user/register/"
+		const registerEndpoint = "http://134.122.81.144:8000/api/v1/user/register/"
 
 		try {
 			const response = await fetch(registerEndpoint, {

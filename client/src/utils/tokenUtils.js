@@ -21,7 +21,7 @@ const refreshTokens = async (refreshToken) => {
     if (refreshToken) {
       
         try {
-        const response = await fetch('http://64.226.118.188:8000/api/v1/token/refresh/', {
+        const response = await fetch('http://134.122.81.144:8000/api/v1/token/refresh/', {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",

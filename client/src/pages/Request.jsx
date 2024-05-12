@@ -61,7 +61,7 @@ const Request = () => {
         }
         console.log(payload);
         try {
-            const response = await axios.post("http://64.226.118.188:8000/missing-persons/", payload, {
+            const response = await axios.post("http://134.122.81.144:8000/missing-persons/", payload, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('jwt_access')}`,
                     'Content-Type': 'multipart/form-data'

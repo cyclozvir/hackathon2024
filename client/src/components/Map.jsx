@@ -35,8 +35,8 @@ function Map({ onMapChange }) {
       lng: e.latLng.lng()
     });
     onMapChange({
-      lat: e.latLng.lat(),
-      lng: e.latLng.lng()
+      latitude: e.latLng.lat(),
+      longitude: e.latLng.lng()
     })
   }, []);
 

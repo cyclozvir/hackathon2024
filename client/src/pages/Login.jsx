@@ -34,7 +34,7 @@ const Login = () => {
 
 	const onSubmit = async (formData) => {
 		try {
-			const response = await fetch("http://64.226.118.188:8000/api/v1/token/", {
+			const response = await fetch("http://134.122.81.144:8000/api/v1/token/", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

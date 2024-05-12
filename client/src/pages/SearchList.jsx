@@ -21,7 +21,7 @@ function SearchList() {
 		const fetchEvents = async () => {
 				try {
 					const response = await fetch(
-						"http://64.226.118.188:8000/missing-persons/",
+						"http://134.122.81.144:8000/missing-persons/",
 						{
 							method: "GET",
 							headers: {
