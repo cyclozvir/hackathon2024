@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
 import {
 	Box,
@@ -12,6 +12,7 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserConext";
 
 const Register = () => {
 	const {
@@ -22,20 +23,21 @@ const Register = () => {
 		reset,
 	} = useForm();
 
+	const {data, updateData} = useContext(UserContext)
+
     const navigate = useNavigate();
 
 	useEffect(() => {
 		
 
-		/*if (checkForCookie()) {
+		if (data == 'user') {
 			navigate("/request-search");
-		}*/
+		}
 	}, [navigate]);
 
 	const onSubmit = async (formData) => {
 		const { repeatPassword, ...formDataToSend } = formData;
 		const registerEndpoint = "http://64.226.118.188:8000/api/v1/user/register/"
-		const loginEndpoint = "http://64.226.118.188:8000/api/v1/token/"
 
 		try {
 			const response = await fetch(registerEndpoint, {
@@ -48,14 +50,14 @@ const Register = () => {
 
 			if (response.status === 409) {
 				const errorData = await response.json();
-				const errorMessage = errorData.message; // Assuming the error message is available in a 'message' field
+				const errorMessage = errorData.email; 
 
 				console.log("Registration Error Message:", errorMessage);
 
 				alert(`Registration Error: ${errorMessage}`);
 			} else if (response.status === 500) {
 				const errorData = await response.json();
-				const errorMessage = errorData.message; // Assuming the error message is available in a 'message' field
+				const errorMessage = errorData.message; 
 
 				console.log("Registration Error Message:", errorMessage);
 
@@ -64,15 +66,14 @@ const Register = () => {
 				const data = await response.json();
 				console.log("Registration Response:", data);
 
-				//const redirectUrl = "/request-search";
+				const redirectUrl = "/request-search";
+				
+				updateData('user')
+				localStorage.setItem('jwt_access', data.access);
+				localStorage.setItem('jwt_refresh', data.refresh);
+				reset()
 
-				//navigate(redirectUrl);
-
-				try {
-					
-				} catch(error){
-
-				}
+				navigate(redirectUrl);
 			}
 		} catch (error) {
 			console.error("Error registering user:", error);
@@ -187,7 +188,7 @@ const Register = () => {
 						Зареєструватись
 					</Button>
 					<Box textAlign="center">
-						<ChakraLink as={RouterLink} to="/login" color="blue.400" mt={3}>
+						<ChakraLink as={RouterLink} to="/login" color="#2FB5AA" mt={3}>
 							 Вже є аккаунт? Увійти
 						</ChakraLink>
 					</Box>

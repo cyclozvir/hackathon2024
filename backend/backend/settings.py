@@ -50,9 +50,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "corsheaders",
     'django_filters',
-    "drf_yasg",
+    'drf_spectacular',
     'rest_framework',
-    'user'
+    'user',
+    'main'
 ]
 
 MIDDLEWARE = [
@@ -72,7 +73,16 @@ ROOT_URLCONF = 'backend.urls'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
 }
 
 TEMPLATES = [
@@ -122,7 +132,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=100),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": False,
@@ -177,7 +187,8 @@ AUTH_USER_MODEL = 'user.CustomUser'
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
+MEDIA_ROOT = BASE_DIR/'media'
+MEDIA_URL = '/media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -187,6 +198,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-print(os.getenv("EMAIL_NAME"), os.getenv("EMAIL_PASSWORD"))
-EMAIL_HOST_USER = "eeposhuk@gmail.com"#os.getenv("EMAIL_NAME")  # Replace with your email address
-EMAIL_HOST_PASSWORD = "gjmlvnellggnpmgc"# os.getenv("EMAIL_PASSWORD")
+EMAIL_HOST_USER = os.getenv("EMAIL_NAME")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")

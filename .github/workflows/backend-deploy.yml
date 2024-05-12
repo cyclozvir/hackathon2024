@@ -1,0 +1,34 @@
+name: Backend deploy to DigitalOcean
+
+on:
+  # push:
+  #   branches: [backend]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+    - name: Deploy to remote server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DIGITAL_OCEAN_HOST }}
+        username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
+        key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
+        passphrase: ${{ secrets.DIGITAL_OCEAN_SSH_PASSPHRASE }}
+        script: |
+          docker stop eposhuk-backend-container || echo 'no container to stop'
+          docker rm eposhuk-backend-container || echo 'no container to remove'
+          docker rmi -f eposhuk-backend-image || echo 'no image to remove'
+          
+          if [ -d "/home2/hackathon2024" ]; then
+              rm -rf /home2/hackathon2024
+          fi
+          
+          cd /home2
+          git clone https://${{ secrets.GH_TOKEN }}@github.com/cyclozvir/hackathon2024.git
+          cd /home2/hackathon2024/backend
+          docker build -t eposhuk-backend-image .
+          docker-compose up -d

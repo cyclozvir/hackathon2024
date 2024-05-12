@@ -1,12 +1,16 @@
 import { Button, HStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../contexts/UserConext";
+import { useContext } from "react";
 
 function Buttons() { 
+
+	const {data, updateData} = useContext(UserContext)
 
     return (
 			<HStack justifyContent="center" spacing="32px">
 				<Link
-					to="/register"
+					to={data == 'user' ? '/request-search': 'register'}
 				>
 					<Button
 						w={200}
@@ -23,7 +27,7 @@ function Buttons() {
 				</Link>
 
 				<Link
-					to="/register"
+					to="/"
 				>
 					<Button
 						w={200}
@@ -35,7 +39,7 @@ function Buttons() {
 						transition=".3s ease-in"
 						size="lg"
 					>
-						Список Пошуку
+						Кого Шукають
 					</Button>
 				</Link>
 			</HStack>

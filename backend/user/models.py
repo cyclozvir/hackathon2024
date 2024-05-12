@@ -68,32 +68,13 @@ def track_user_password(sender, instance, created, **kwargs):
 class SeekerLocation(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
-    seeker = models.ForeignKey(Seeker, on_delete=models.CASCADE, related_name='locations')
+    seeker = models.OneToOneField(Seeker, on_delete=models.CASCADE, related_name='locations')
 
     def __str__(self):
         return f"{self.latitude}, {self.longitude}"
 
 
-class Location(models.Model):
-    latitude = models.DecimalField(max_digits=9, decimal_places=6)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6)
-
-    def __str__(self):
-        return f"{self.latitude}, {self.longitude}"
 
 
-class MissingPerson(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    age = models.IntegerField(default=0)
-    gender = models.CharField(max_length=100, choices=(('male', 'male'),
-                                                       ('female', 'female'),
-                                                       ('not specified', 'not specified')), default='not specified')
-    description = models.TextField()
-    last_seen_location = models.OneToOneField(Location, on_delete=models.CASCADE)
-    last_seen_date = models.DateField(default=datetime.now)
-    photo = models.ImageField(upload_to='photos/%Y/%m/%d', blank=True, null=True)
-    contact_information = models.CharField(max_length=255, blank=True, null=True)
 
-    def __str__(self):
-        return self.first_name
+

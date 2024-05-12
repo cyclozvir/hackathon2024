@@ -4,7 +4,7 @@ const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
 
-  const [data, setData] = useState('default value');
+  const [data, setData] = useState(null);
 
   const updateData = (newData) => {
     setData(newData);
