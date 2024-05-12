@@ -12,7 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserConext";
 
-const Login = () => {
+const Request = () => {
 	const {
 		register,
 		handleSubmit,
@@ -27,8 +27,8 @@ const Login = () => {
 	useEffect(() => {
 		
 
-		if (data == 'user') {
-			navigate("/request-search");
+		if (data != 'user') {
+			navigate("/");
 		}
 	}, [navigate]);
 
@@ -73,7 +73,7 @@ const Login = () => {
 	return (
 		<Box maxW="md" mx="auto" mt={8} p={6} borderWidth={1} borderRadius="md">
 			<Heading as="h2" size="lg" textAlign="center">
-				Увійти
+				Запит На Пошук
 			</Heading>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<Stack spacing={3}>
@@ -131,4 +131,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default Request

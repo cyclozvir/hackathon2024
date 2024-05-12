@@ -50,14 +50,14 @@ const Register = () => {
 
 			if (response.status === 409) {
 				const errorData = await response.json();
-				const errorMessage = errorData.email; // Assuming the error message is available in a 'message' field
+				const errorMessage = errorData.email; 
 
 				console.log("Registration Error Message:", errorMessage);
 
 				alert(`Registration Error: ${errorMessage}`);
 			} else if (response.status === 500) {
 				const errorData = await response.json();
-				const errorMessage = errorData.message; // Assuming the error message is available in a 'message' field
+				const errorMessage = errorData.message; 
 
 				console.log("Registration Error Message:", errorMessage);
 
@@ -66,13 +66,14 @@ const Register = () => {
 				const data = await response.json();
 				console.log("Registration Response:", data);
 
-				//const redirectUrl = "/request-search";
-
-				//navigate(redirectUrl);
+				const redirectUrl = "/request-search";
+				
 				updateData('user')
 				localStorage.setItem('jwt_access', data.access);
 				localStorage.setItem('jwt_refresh', data.refresh);
 				reset()
+
+				navigate(redirectUrl);
 			}
 		} catch (error) {
 			console.error("Error registering user:", error);
@@ -187,7 +188,7 @@ const Register = () => {
 						Зареєструватись
 					</Button>
 					<Box textAlign="center">
-						<ChakraLink as={RouterLink} to="/login" color="blue.400" mt={3}>
+						<ChakraLink as={RouterLink} to="/login" color="#2FB5AA" mt={3}>
 							 Вже є аккаунт? Увійти
 						</ChakraLink>
 					</Box>
