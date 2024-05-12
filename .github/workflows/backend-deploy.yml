@@ -34,5 +34,5 @@ jobs:
 
           cd /home/hackathon2024/client
           npm install
-          npm run dev
+          npm run build
           
