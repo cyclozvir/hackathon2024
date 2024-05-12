@@ -9,6 +9,16 @@ const theme = extendTheme({
     heading: `'Montserrat', sans-serif`,
     body: `'Montserrat', sans-serif`,
   },
+  components: {
+    Input: {
+      baseStyle: {
+        _focus: {
+          borderColor: "green.400", // Change the color here
+          boxShadow: "none",
+        },
+      },
+    },
+  },
 })
 
 export default theme

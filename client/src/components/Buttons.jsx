@@ -27,7 +27,7 @@ function Buttons() {
 				</Link>
 
 				<Link
-					to="/"
+					to="/search-list"
 				>
 					<Button
 						w={200}

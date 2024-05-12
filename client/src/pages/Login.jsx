@@ -80,6 +80,7 @@ const Login = () => {
 					<FormControl isRequired>
 						<FormLabel htmlFor="email">Email</FormLabel>
 						<Input
+							focusBorderColor="#4FD1C5"
 							type="email"
 							id="email"
 							{...register("email", {
@@ -98,6 +99,7 @@ const Login = () => {
 					<FormControl isRequired>
 						<FormLabel htmlFor="password">Password</FormLabel>
 						<Input
+							focusBorderColor="#4FD1C5"
 							type="password"
 							id="password"
 							{...register("password", {

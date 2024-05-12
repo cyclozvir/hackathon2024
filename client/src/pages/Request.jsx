@@ -1,4 +1,4 @@
-import { useEffect, useContext} from "react";
+import { useEffect, useContext, useState} from "react";
 import { useForm } from "react-hook-form";
 import {
 	Box,
@@ -10,10 +10,12 @@ import {
 	Heading,
     Select,
     Textarea,
+    Flex
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserConext";
 import axios from 'axios';
+import Map from '../components/Map'
 
 const Request = () => {
 	const {
@@ -24,6 +26,12 @@ const Request = () => {
 	} = useForm();
 
 	const {data, updateData} = useContext(UserContext)
+    const [mapValue, setMapValue] = useState(null);
+   
+    const handleMapValue = (value) => {
+        console.log(value)
+        setMapValue(value);
+      };
 
     const navigate = useNavigate();
 
@@ -36,6 +44,10 @@ const Request = () => {
 	}, [navigate]);
 
 	const onSubmit = async (formData) => {
+        if (mapValue == null){
+            alert('set location on map')
+            return
+        }
         const payload = {
             first_name: formData.first_name,
             last_name: formData.last_name,
@@ -44,7 +56,8 @@ const Request = () => {
             age: formData.age,
             gender: formData.gender,
             last_seen_date: formData.last_seen_date,
-            contact_information: formData.contact_information
+            contact_information: formData.contact_information,
+            last_seen_location: mapValue
         }
         console.log(payload);
         try {
@@ -71,7 +84,7 @@ const Request = () => {
 
 	return (
 		<Box maxW="md" mx="auto" mt={8} p={6} borderWidth={1} borderRadius="md">
-            <Heading as="h2" size="lg" textAlign="center">
+            <Heading as="h2" size="lg" textAlign="center" mb={5}> 
                 Запит На Пошук
             </Heading>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -79,6 +92,7 @@ const Request = () => {
                     <FormControl isRequired>
                         <FormLabel htmlFor="first_name">First Name</FormLabel>
                         <Input
+                            focusBorderColor="#4FD1C5"
                             type="text"
                             id="first_name"
                             {...register("first_name", { required: "Please enter your first name" })}
@@ -91,6 +105,7 @@ const Request = () => {
                     <FormControl isRequired>
                         <FormLabel htmlFor="last_name">Last Name</FormLabel>
                         <Input
+                            focusBorderColor="#4FD1C5"
                             type="text"
                             id="last_name"
                             {...register("last_name", { required: "Please enter your last name" })}
@@ -103,6 +118,7 @@ const Request = () => {
                     <FormControl isRequired>
                         <FormLabel htmlFor="age">Age</FormLabel>
                         <Input
+                            focusBorderColor="#4FD1C5"
                             type="number"
                             id="age"
                             {...register("age", { required: "Please enter your age" })}
@@ -115,6 +131,7 @@ const Request = () => {
                     <FormControl isRequired>
                         <FormLabel htmlFor="gender">Gender</FormLabel>
                         <Select
+                            focusBorderColor="#4FD1C5"
                             id="gender"
                             {...register("gender", { required: "Please select your gender" })}
                             placeholder="Select your gender"
@@ -129,6 +146,7 @@ const Request = () => {
                     <FormControl isRequired>
                         <FormLabel htmlFor="description">Description</FormLabel>
                         <Textarea
+                            focusBorderColor="#4FD1C5"
                             id="description"
                             {...register("description", { required: "Please enter a description" })}
                             placeholder="Enter a description"
@@ -140,6 +158,7 @@ const Request = () => {
                     <FormControl isRequired>
                         <FormLabel htmlFor="last_seen_date">Last Seen Date</FormLabel>
                         <Input
+                            focusBorderColor="#4FD1C5"
                             type='date'
                             id="last_seen_date"
                             {...register("last_seen_date", { required: "Please select the last seen date" })}
@@ -151,7 +170,8 @@ const Request = () => {
                     </FormControl>
                     <FormControl isRequired>
                         <FormLabel htmlFor="photo">Photo</FormLabel>
-                        <Input 
+                        <Input
+                            focusBorderColor="#4FD1C5"
                             type="file" 
                             id="photo"
                             {...register("photo", { required: "Please select the last seen date" })}
@@ -165,6 +185,7 @@ const Request = () => {
                     <FormControl isRequired>
                         <FormLabel htmlFor="contact_information">Contact Information</FormLabel>
                         <Input
+                            focusBorderColor="#4FD1C5"
                             type="text"
                             id="contact_information"
                             {...register("contact_information", { required: "Please enter your contact information" })}
@@ -174,6 +195,7 @@ const Request = () => {
                             <span style={{ color: "red" }}>{errors.contact_information.message}</span>
                         )}
                     </FormControl>
+                    <Map onMapChange={handleMapValue}/>
                     <Button
                         type="submit"
                         bg="#4FD1C5"

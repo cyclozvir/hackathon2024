@@ -96,6 +96,7 @@ const Register = () => {
 					<FormControl isRequired>
 						<FormLabel htmlFor="firstName">First Name</FormLabel>
 						<Input
+							focusBorderColor="#4FD1C5"
 							type="text"
 							id="firstName"
 							{...register("first_name", {
@@ -110,6 +111,7 @@ const Register = () => {
 					<FormControl isRequired>
 						<FormLabel htmlFor="lastName">Last Name</FormLabel>
 						<Input
+							focusBorderColor="#4FD1C5"
 							type="text"
 							id="lastName"
 							{...register("last_name", {
@@ -124,6 +126,7 @@ const Register = () => {
 					<FormControl isRequired>
 						<FormLabel htmlFor="email">Email</FormLabel>
 						<Input
+							focusBorderColor="#4FD1C5"
 							type="email"
 							id="email"
 							{...register("email", {
@@ -142,6 +145,7 @@ const Register = () => {
 					<FormControl isRequired>
 						<FormLabel htmlFor="password">Password</FormLabel>
 						<Input
+							focusBorderColor="#4FD1C5"
 							type="password"
 							id="password"
 							{...register("password", {
@@ -160,6 +164,7 @@ const Register = () => {
 					<FormControl isRequired>
 						<FormLabel htmlFor="repeatPassword">Repeat Password</FormLabel>
 						<Input
+							focusBorderColor="#4FD1C5"
 							type="password"
 							id="repeatPassword"
 							{...register("repeatPassword", {
