@@ -9,7 +9,7 @@ class MissingPersonLocationSerializer(serializers.ModelSerializer):
 
 
 class MissingPersonSerializer(serializers.ModelSerializer):
-    last_seen_location = MissingPersonLocationSerializer(many=True, required=False)
+    last_seen_location = MissingPersonLocationSerializer(many=True, required=True)
 
     class Meta:
         model = MissingPerson
