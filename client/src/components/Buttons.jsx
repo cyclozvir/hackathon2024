@@ -39,7 +39,7 @@ function Buttons() {
 						transition=".3s ease-in"
 						size="lg"
 					>
-						Список Пошуку
+						Кого Шукають
 					</Button>
 				</Link>
 			</HStack>

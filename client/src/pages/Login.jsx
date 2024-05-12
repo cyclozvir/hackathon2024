@@ -42,9 +42,9 @@ const Login = () => {
 				body: JSON.stringify(formData),
 			});
 
-			if (response.status === 409) {
+			if (response.status === 401) {
 				const errorData = await response.json();
-				const errorMessage = errorData.message; // Assuming the error message is available in a 'message' field
+				const errorMessage = errorData.detail; // Assuming the error message is available in a 'message' field
 
 				console.log("Login Error Message:", errorMessage);
 

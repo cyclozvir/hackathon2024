@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext} from "react";
 import { useForm } from "react-hook-form";
 import {
 	Box,
@@ -8,9 +8,12 @@ import {
 	Input,
 	Stack,
 	Heading,
+    Select,
+    Textarea,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserConext";
+import axios from 'axios';
 
 const Request = () => {
 	const {
@@ -33,101 +36,160 @@ const Request = () => {
 	}, [navigate]);
 
 	const onSubmit = async (formData) => {
-		try {
-			const response = await fetch("http://64.226.118.188:8000/api/v1/token/", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(formData),
-			});
-
-			if (response.status === 409) {
-				const errorData = await response.json();
-				const errorMessage = errorData.message; // Assuming the error message is available in a 'message' field
-
-				console.log("Login Error Message:", errorMessage);
-
-				alert(`Login Error: ${errorMessage}`);
-				reset();
-			} else {
-				const data = await response.json();
-				console.log("Registration Response:", data);
-
-				const redirectUrl = "/request-search";
-
-				updateData('user')
-				localStorage.setItem('jwt_access', data.access);
-				localStorage.setItem('jwt_refresh', data.refresh);
-				reset()
-
-				navigate(redirectUrl);
-			}
-		} catch (error) {
-			console.error("Error login user:", error);
-			// Handle other types of errors (e.g., network issues)
-			alert("Error login user. Please try again later.");
-		}
-	};
+        const payload = {
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            description: formData.description,
+            photo: formData.photo['0'],
+            age: formData.age,
+            gender: formData.gender,
+            last_seen_date: formData.last_seen_date,
+            contact_information: formData.contact_information
+        }
+        console.log(payload);
+        try {
+            const response = await axios.post("http://64.226.118.188:8000/missing-persons/", payload, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwt_access')}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
+            if (response.status === 201) {
+                alert('request created')
+                console.log("Search Req Response:", response);
+            } else {
+                const errorMessage = response.data.message;
+                console.log("Login Error Message:", errorMessage);
+                alert(`Login Error: ${errorMessage}`);
+            }
+        } catch (error) {
+            console.error("Error login user:", error);
+            alert("Error login user. Please try again later.");
+        }
+    };
 
 	return (
 		<Box maxW="md" mx="auto" mt={8} p={6} borderWidth={1} borderRadius="md">
-			<Heading as="h2" size="lg" textAlign="center">
-				Запит На Пошук
-			</Heading>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<Stack spacing={3}>
-					<FormControl isRequired>
-						<FormLabel htmlFor="email">Email</FormLabel>
-						<Input
-							type="email"
-							id="email"
-							{...register("email", {
-								required: "Please enter your email",
-								pattern: {
-									value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-									message: "Invalid email address",
-								},
-							})}
-							placeholder="Enter your email"
-						/>
-						{errors.email && (
-							<span style={{ color: "red" }}>{errors.email.message}</span>
-						)}
-					</FormControl>
-					<FormControl isRequired>
-						<FormLabel htmlFor="password">Password</FormLabel>
-						<Input
-							type="password"
-							id="password"
-							{...register("password", {
-								required: "Please enter a password",
-								minLength: {
-									value: 8,
-									message: "Password must be at least 8 characters",
-								},
-							})}
-							placeholder="Enter your password"
-						/>
-						{errors.password && (
-							<span style={{ color: "red" }}>{errors.password.message}</span>
-						)}
-					</FormControl>
-					<Button
-						type="submit"
-						bg="#4FD1C5"
-						color="white"
-						_hover={{
-							background: "#2FB5AA",
-						}}
-						transition=".3s ease-in"
-						size="lg"
-					>
-						Увійти
-					</Button>
-				</Stack>
-			</form>
-		</Box>
+            <Heading as="h2" size="lg" textAlign="center">
+                Запит На Пошук
+            </Heading>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Stack spacing={3}>
+                    <FormControl isRequired>
+                        <FormLabel htmlFor="first_name">First Name</FormLabel>
+                        <Input
+                            type="text"
+                            id="first_name"
+                            {...register("first_name", { required: "Please enter your first name" })}
+                            placeholder="Enter your first name"
+                        />
+                        {errors.first_name && (
+                            <span style={{ color: "red" }}>{errors.first_name.message}</span>
+                        )}
+                    </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel htmlFor="last_name">Last Name</FormLabel>
+                        <Input
+                            type="text"
+                            id="last_name"
+                            {...register("last_name", { required: "Please enter your last name" })}
+                            placeholder="Enter your last name"
+                        />
+                        {errors.last_name && (
+                            <span style={{ color: "red" }}>{errors.last_name.message}</span>
+                        )}
+                    </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel htmlFor="age">Age</FormLabel>
+                        <Input
+                            type="number"
+                            id="age"
+                            {...register("age", { required: "Please enter your age" })}
+                            placeholder="Enter your age"
+                        />
+                        {errors.age && (
+                            <span style={{ color: "red" }}>{errors.age.message}</span>
+                        )}
+                    </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel htmlFor="gender">Gender</FormLabel>
+                        <Select
+                            id="gender"
+                            {...register("gender", { required: "Please select your gender" })}
+                            placeholder="Select your gender"
+                        >
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </Select>
+                        {errors.gender && (
+                            <span style={{ color: "red" }}>{errors.gender.message}</span>
+                        )}
+                    </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel htmlFor="description">Description</FormLabel>
+                        <Textarea
+                            id="description"
+                            {...register("description", { required: "Please enter a description" })}
+                            placeholder="Enter a description"
+                        />
+                        {errors.description && (
+                            <span style={{ color: "red" }}>{errors.description.message}</span>
+                        )}
+                    </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel htmlFor="last_seen_date">Last Seen Date</FormLabel>
+                        <Input
+                            type='date'
+                            id="last_seen_date"
+                            {...register("last_seen_date", { required: "Please select the last seen date" })}
+                            placeholder="Select last seen date"
+                        />
+                        {errors.last_seen_date && (
+                            <span style={{ color: "red" }}>{errors.last_seen_date.message}</span>
+                        )}
+                    </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel htmlFor="photo">Photo</FormLabel>
+                        <Input 
+                            type="file" 
+                            id="photo"
+                            {...register("photo", { required: "Please select the last seen date" })}
+                            />
+                        {errors.photo && (
+                            <span style={{ color: "red" }}>
+                                {errors.photo.message}
+                            </span>
+                        )}
+                    </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel htmlFor="contact_information">Contact Information</FormLabel>
+                        <Input
+                            type="text"
+                            id="contact_information"
+                            {...register("contact_information", { required: "Please enter your contact information" })}
+                            placeholder="Enter your contact information"
+                        />
+                        {errors.contact_information && (
+                            <span style={{ color: "red" }}>{errors.contact_information.message}</span>
+                        )}
+                    </FormControl>
+                    <Button
+                        type="submit"
+                        bg="#4FD1C5"
+                        color="white"
+                        _hover={{
+                            background: "#2FB5AA",
+                        }}
+                        transition=".3s ease-in"
+                        size="lg"
+                    >
+                        Створити
+                    </Button>
+                </Stack>
+            </form>
+        </Box>
+
 	);
 };
 
