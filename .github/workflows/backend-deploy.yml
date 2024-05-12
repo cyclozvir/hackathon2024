@@ -31,4 +31,7 @@ jobs:
           git clone https://${{ secrets.GH_TOKEN }}@github.com/cyclozvir/hackathon2024.git
           cd /home/hackathon2024/backend
           docker compose up -d
+
+          cd /home/hackathon2024/client
+          npm run build
           
