@@ -2,7 +2,6 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, generics, response
 from rest_framework.generics import UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -26,7 +25,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 class UserView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(tags=["user"])
     def get(self, request):
         user = CustomUser.objects.filter(id=request.user.id).first()
         resp = serializers.CustomUserSerializer(user)
@@ -39,7 +37,6 @@ class UserView(APIView):
             )
 
 
-@swagger_auto_schema(tags=["user"])
 class UserUpdateView(UpdateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = serializers.CustomUserUpdateSerializer
@@ -52,7 +49,6 @@ class UserUpdateView(UpdateAPIView):
 class UserRegistrationView(APIView):
     permission_classes = (AllowAny,)
 
-    @swagger_auto_schema(tags=["user"])
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
         if serializer.is_valid():
@@ -71,7 +67,6 @@ class PasswordReset(generics.GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = serializers.EmailSerializer
 
-    @swagger_auto_schema(tags=["user"])
     def post(self, request):
         """
         Create token.
@@ -122,7 +117,6 @@ class ResetPasswordAPI(generics.GenericAPIView):
     serializer_class = serializers.ResetPasswordSerializer
     permission_classes = (AllowAny,)
 
-    @swagger_auto_schema(tags=["user"])
     def patch(self, request, *args, **kwargs):
         """
         Verify token & encoded_pk and then reset the password.
