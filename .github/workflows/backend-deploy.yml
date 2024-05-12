@@ -23,13 +23,12 @@ jobs:
           docker rm eposhuk-backend-container || echo 'no container to remove'
           docker rmi -f eposhuk-backend-image || echo 'no image to remove'
           
-          if [ -d "/home2/hackathon2024" ]; then
-              rm -rf /home2/hackathon2024
+          if [ -d "/home/hackathon2024" ]; then
+              rm -rf /home/hackathon2024
           fi
           
-          cd /home2
+          cd /home
           git clone https://${{ secrets.GH_TOKEN }}@github.com/cyclozvir/hackathon2024.git
-          cd /home2/hackathon2024/backend
-          # docker build -t eposhuk-backend-image -f /home2/hackathon2024/backend/Dockerfile
-          docker-compose up -d
+          cd /home/hackathon2024/backend
+          docker compose up -d
           
