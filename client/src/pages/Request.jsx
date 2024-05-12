@@ -44,10 +44,7 @@ const Request = () => {
 	}, [navigate]);
 
 	const onSubmit = async (formData) => {
-        if (mapValue == null){
-            alert('set location on map')
-            return
-        }
+        
         const payload = {
             first_name: formData.first_name,
             last_name: formData.last_name,

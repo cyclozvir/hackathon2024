@@ -12,17 +12,17 @@ import {
 	Image,
     Center
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-function SearchList() {
-	
+function SearchSingle() {
+	const { id } = useParams();
 	const [events, setEvents] = useState(null);
 
 	useEffect(() => {
 		const fetchEvents = async () => {
 				try {
 					const response = await fetch(
-						"http://134.122.81.144:8000/missing-persons/",
+						`http://134.122.81.144:8000/missing-persons/${id}/`,
 						{
 							method: "GET",
 							headers: {
@@ -50,9 +50,9 @@ function SearchList() {
 			<section className="container">
 				<HStack spacing="16px" flexWrap="wrap" justifyContent="center">
 					{events ? (
-						events.map((item) => (
+					
 							<Card
-								key={item.id}
+								key={events.id}
 								maxW="sm"
                                 minW="sm"
                                 minH="sm"
@@ -63,24 +63,22 @@ function SearchList() {
 							>
 								<CardBody>
 									<Image
-										src={item.photo}
+										src={events.photo}
 										borderRadius="lg"
 									/>
 									<Stack mt="6" spacing="3">
-										<Heading size="md">{item.title}</Heading>
+										<Heading size="md">{events.title}</Heading>
 										    <Text>
-												{item.first_name} {item.last_name}
+												{events.first_name} {events.last_name}
 											</Text>
                                             <Text>
-                                                {item.description.length <= 100
-                                                    ? item.description
-                                                    : `${item.description.substring(0, 100).trim()}...`}
+                                                {events.description}
                                             </Text>
 									</Stack>
 								</CardBody>
 								<Divider />
 								<CardFooter>
-									<Link to={`/missing-persons/${item.id}`}> 
+									<Link to={`/missing-persons/${events.id}`}> 
 										<Button
 											w={200}
 											bg="#4FD1C5"
@@ -96,7 +94,7 @@ function SearchList() {
 									</Link>
 								</CardFooter>
 							</Card>
-						))
+						
 					) : (
 						<p>Loading user data...</p>
 					)}
@@ -106,4 +104,4 @@ function SearchList() {
 	);
 }
 
-export default SearchList
+export default SearchSingle

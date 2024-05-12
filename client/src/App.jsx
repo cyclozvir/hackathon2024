@@ -8,7 +8,9 @@ import Register from "./pages/Register"
 import Login from "./pages/Login"
 import Request  from "./pages/Request"
 import SearchList from "./pages/SearchList"
+import SearchSingle from "./pages/SearchSingle"
 import { UserContext } from "./contexts/UserConext";
+
 
 function App() {
   
@@ -35,8 +37,9 @@ function App() {
 				<Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />}/>
-        <Route path="request-search" element={<Request />}/>
-        <Route path="search-list" element={<SearchList/>} />
+        <Route path="/request-search" element={<Request />}/>
+        <Route path="/search-list" element={<SearchList/>} />
+        <Route path="/missing-persons/:id" element={<SearchSingle/>} />
 			</Routes>
     </>
   )
