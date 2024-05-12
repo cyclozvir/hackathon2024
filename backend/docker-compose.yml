@@ -5,12 +5,10 @@ services:
         build:
             context: .
         volumes:
-          - ./logs:/app/logs
+        - ./logs:/app/logs
+        - /home/media:/home/media
         ports: 
         - '8000:8000'
-#        volumes:
-#            - project-root:/var/www/html
-#            - web_certs:/var/www/certs
 #        networks:
 #            default:
 #                ipv4_address: 172.55.66.2
