@@ -21,7 +21,7 @@ jobs:
         script: |
           docker stop eposhuk-backend-container || echo 'no container to stop'
           docker rm eposhuk-backend-container || echo 'no container to remove'
-          docker rmi -f eposhuk-backend-image || echo 'no image to remove'
+          docker rmi -f backend-web || echo 'no image to remove'
           
           if [ -d "/home/hackathon2024" ]; then
               rm -rf /home/hackathon2024
