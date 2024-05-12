@@ -22,6 +22,12 @@ jobs:
           docker stop eposhuk-backend-container || true
           docker rm eposhuk-backend-container || true
           docker rmi -f eposhuk-backend-image || true
+          
+          if [ -d "/home/hackathon2024" ]; then
+              rm -rf /home/hackathon2024
+          fi
+          
+          cd /home
           git clone https://${{ secrets.GH_TOKEN }}@github.com/cyclozvir/hackathon2024.git .
           cd /home/hackathon2024/backend
           docker build -t eposhuk-backend-image -f Dockerfile .
