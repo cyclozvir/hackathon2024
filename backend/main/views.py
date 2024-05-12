@@ -22,7 +22,7 @@ from user import serializers
 
 
 class MissingPersonListCreateAPIView(generics.ListCreateAPIView, ):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     queryset = MissingPerson.objects.all()
     serializer_class = MissingPersonSerializer
     filter_backends = [SearchFilter]
@@ -30,6 +30,6 @@ class MissingPersonListCreateAPIView(generics.ListCreateAPIView, ):
 
 
 class MissingPersonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     queryset = MissingPerson.objects.all()
     serializer_class = MissingPersonSerializer
